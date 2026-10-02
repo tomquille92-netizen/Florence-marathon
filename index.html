@@ -3,122 +3,1486 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Florence Marathon Training Plan</title>
+
+<link rel="manifest" href="/Florence-marathon/manifest.json">
+<meta name="theme-color" content="#1f6f8b">
+
 <style>
-  :root { --bg:#f5f7f8; --card:#fff; --text:#17202a; --muted:#66727d; --line:#dce2e7; --accent:#1f6f8b; --easy:#eaf5f8; --quality:#fff4df; --long:#edf6ea; --race:#f7eafa; }
-  * { box-sizing:border-box; }
-  body { margin:0; font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; background:var(--bg); color:var(--text); }
-  .wrap { max-width:1100px; margin:auto; padding:18px; }
-  header { background:var(--card); border-radius:16px; padding:22px; margin-bottom:16px; box-shadow:0 2px 10px #0000000b; }
-  h1 { margin:0 0 5px; font-size:clamp(24px,5vw,36px); }
-  .sub { color:var(--muted); margin:0; }
-  .goal { margin-top:14px; padding:12px 14px; background:#eef5f7; border-radius:10px; font-size:14px; }
-  .week { background:var(--card); border:1px solid var(--line); border-radius:14px; margin:12px 0; overflow:hidden; }
-  .weekhead { display:flex; justify-content:space-between; gap:10px; padding:13px 15px; background:#f9fafb; border-bottom:1px solid var(--line); }
-  .weekhead strong { font-size:16px; }
-  .focus { color:var(--muted); font-size:13px; text-align:right; }
-  .runs { display:grid; grid-template-columns:repeat(3,1fr); }
-  .run { padding:15px; min-height:125px; border-right:1px solid var(--line); }
-  .run:last-child { border-right:0; }
-  .run.easy { background:var(--easy); }
-  .run.quality { background:var(--quality); }
-  .run.long { background:var(--long); }
-  .run.race { background:var(--race); }
-  .day { font-weight:750; margin-bottom:7px; }
-  .session { font-size:14px; line-height:1.45; white-space:pre-line; }
-  .check { cursor:pointer; margin-right:6px; transform:scale(1.15); }
-  .done { opacity:.55; text-decoration:line-through; }
-  .section { background:var(--card); border-radius:14px; padding:18px; margin-top:16px; }
-  .grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
-  .item { padding:11px 13px; border:1px solid var(--line); border-radius:10px; font-size:14px; }
-  .item b { display:block; margin-bottom:3px; }
-  .print { float:right; border:0; background:var(--accent); color:#fff; padding:9px 13px; border-radius:9px; font-weight:650; cursor:pointer; }
-  footer { color:var(--muted); font-size:12px; padding:18px 3px 30px; }
-  @media(max-width:700px){ .runs{grid-template-columns:1fr;} .run{border-right:0;border-bottom:1px solid var(--line);min-height:0}.run:last-child{border-bottom:0}.grid{grid-template-columns:1fr}.focus{text-align:left}.weekhead{display:block}.print{margin-top:-5px} }
-  @media print { body{background:#fff}.print{display:none}.week{break-inside:avoid}.wrap{max-width:none;padding:0} }
+  :root {
+    --bg:#f5f7f8;
+    --card:#ffffff;
+    --text:#17202a;
+    --muted:#66727d;
+    --line:#dce2e7;
+    --accent:#1f6f8b;
+    --easy:#eaf5f8;
+    --quality:#fff4df;
+    --long:#edf6ea;
+    --race:#f7eafa;
+    --completed:#dff2df;
+  }
+
+  * {
+    box-sizing:border-box;
+  }
+
+  body {
+    margin:0;
+    font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+  }
+
+  .wrap {
+    max-width:1100px;
+    margin:auto;
+    padding:18px;
+  }
+
+  header {
+    background:var(--card);
+    border-radius:16px;
+    padding:22px;
+    margin-bottom:16px;
+    box-shadow:0 2px 10px #0000000b;
+  }
+
+  h1 {
+    margin:0 0 5px;
+    font-size:clamp(24px,5vw,36px);
+  }
+
+  h2 {
+    margin-top:0;
+  }
+
+  .sub {
+    color:var(--muted);
+    margin:0;
+  }
+
+  .goal {
+    margin-top:14px;
+    padding:12px 14px;
+    background:#eef5f7;
+    border-radius:10px;
+    font-size:14px;
+  }
+
+  /* LOGIN */
+
+  #login-box {
+    background:var(--card);
+    border-radius:16px;
+    padding:18px;
+    margin-bottom:16px;
+    box-shadow:0 2px 10px #0000000b;
+  }
+
+  #login-box h2 {
+    margin-bottom:6px;
+  }
+
+  #login-message {
+    color:var(--muted);
+    font-size:14px;
+  }
+
+  #email {
+    padding:11px;
+    width:260px;
+    max-width:70%;
+    border:1px solid var(--line);
+    border-radius:8px;
+    font-size:14px;
+  }
+
+  button {
+    border:0;
+    background:var(--accent);
+    color:white;
+    padding:10px 15px;
+    border-radius:8px;
+    font-weight:650;
+    cursor:pointer;
+  }
+
+  button:hover {
+    opacity:.9;
+  }
+
+  #logout-button {
+    background:#66727d;
+  }
+
+  /* PROGRESS */
+
+  .progress-box {
+    background:var(--card);
+    border-radius:16px;
+    padding:18px;
+    margin-bottom:16px;
+    box-shadow:0 2px 10px #0000000b;
+  }
+
+  .progress-top {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:9px;
+  }
+
+  .progress-number {
+    font-size:20px;
+    font-weight:750;
+  }
+
+  .progress-bar {
+    height:12px;
+    background:#e3e7ea;
+    border-radius:10px;
+    overflow:hidden;
+  }
+
+  .progress-fill {
+    height:100%;
+    width:0%;
+    background:var(--accent);
+    transition:width .3s ease;
+  }
+
+  /* WEEKS */
+
+  .week {
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:14px;
+    margin:12px 0;
+    overflow:hidden;
+  }
+
+  .weekhead {
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    padding:13px 15px;
+    background:#f9fafb;
+    border-bottom:1px solid var(--line);
+  }
+
+  .weekhead strong {
+    font-size:16px;
+  }
+
+  .focus {
+    color:var(--muted);
+    font-size:13px;
+    text-align:right;
+  }
+
+  .runs {
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+  }
+
+  .run {
+    padding:15px;
+    min-height:125px;
+    border-right:1px solid var(--line);
+    transition:.2s;
+  }
+
+  .run:last-child {
+    border-right:0;
+  }
+
+  .run.easy {
+    background:var(--easy);
+  }
+
+  .run.quality {
+    background:var(--quality);
+  }
+
+  .run.long {
+    background:var(--long);
+  }
+
+  .run.race {
+    background:var(--race);
+  }
+
+  .run.done {
+    opacity:.65;
+    background:var(--completed);
+  }
+
+  .day {
+    font-weight:750;
+    margin-bottom:7px;
+  }
+
+  .session {
+    font-size:14px;
+    line-height:1.45;
+  }
+
+  .session label {
+    cursor:pointer;
+  }
+
+  .check {
+    cursor:pointer;
+    margin-right:7px;
+    transform:scale(1.2);
+  }
+
+  .run.done .session {
+    text-decoration:line-through;
+  }
+
+  .run.done .day {
+    text-decoration:none;
+  }
+
+  /* SECTIONS */
+
+  .section {
+    background:var(--card);
+    border-radius:14px;
+    padding:18px;
+    margin-top:16px;
+  }
+
+  .grid {
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+  }
+
+  .item {
+    padding:11px 13px;
+    border:1px solid var(--line);
+    border-radius:10px;
+    font-size:14px;
+  }
+
+  .item b {
+    display:block;
+    margin-bottom:3px;
+  }
+
+  .print {
+    float:right;
+  }
+
+  footer {
+    color:var(--muted);
+    font-size:12px;
+    padding:18px 3px 30px;
+  }
+
+  .sync-status {
+    font-size:12px;
+    color:var(--muted);
+    margin-top:8px;
+  }
+
+  /* MOBILE */
+
+  @media(max-width:700px) {
+
+    .runs {
+      grid-template-columns:1fr;
+    }
+
+    .run {
+      border-right:0;
+      border-bottom:1px solid var(--line);
+      min-height:0;
+    }
+
+    .run:last-child {
+      border-bottom:0;
+    }
+
+    .grid {
+      grid-template-columns:1fr;
+    }
+
+    .focus {
+      text-align:left;
+      margin-top:4px;
+    }
+
+    .weekhead {
+      display:block;
+    }
+
+    .print {
+      margin-top:-5px;
+    }
+
+    #email {
+      width:100%;
+      max-width:none;
+      margin-bottom:8px;
+    }
+
+    #login-button {
+      width:100%;
+    }
+
+  }
+
+  /* PRINT */
+
+  @media print {
+
+    body {
+      background:#fff;
+    }
+
+    .print,
+    #login-box {
+      display:none;
+    }
+
+    .week {
+      break-inside:avoid;
+    }
+
+    .wrap {
+      max-width:none;
+      padding:0;
+    }
+
+  }
 </style>
 </head>
+
 <body>
+
 <div class="wrap">
+
 <header>
-  <button class="print" onclick="window.print()">Print / Save PDF</button>
+
+  <button class="print" onclick="window.print()">
+    Print / Save PDF
+  </button>
+
   <h1>Florence Marathon 🏃</h1>
-  <p class="sub">29 November 2026 · 9-week endurance-focused plan</p>
-  <div class="goal"><b>Goal:</b> Maintain your Copenhagen 1:29 fitness, build marathon endurance and arrive fresh. 3 runs per week — easy, quality, long.</div>
+
+  <p class="sub">
+    29 November 2026 · 9-week endurance-focused plan
+  </p>
+
+  <div class="goal">
+    <b>Goal:</b>
+    Maintain your Copenhagen 1:29 fitness, build marathon endurance
+    and arrive fresh. Three runs per week — easy, quality and long.
+  </div>
+
 </header>
+
+
+<!-- LOGIN -->
+
+<div id="login-box">
+
+  <h2>Training Progress</h2>
+
+  <p id="login-message">
+    Sign in to synchronise your completed runs across your devices.
+  </p>
+
+  <div id="login-form">
+
+    <input
+      id="email"
+      type="email"
+      placeholder="Your email address"
+      autocomplete="email"
+    >
+
+    <button id="login-button">
+      Sign in
+    </button>
+
+  </div>
+
+  <button
+    id="logout-button"
+    style="display:none;"
+  >
+    Sign out
+  </button>
+
+  <div
+    id="sync-status"
+    class="sync-status"
+  ></div>
+
+</div>
+
+
+<!-- PROGRESS -->
+
+<div class="progress-box">
+
+  <div class="progress-top">
+
+    <span>Training progress</span>
+
+    <span
+      id="progress-number"
+      class="progress-number"
+    >
+      0 / 27
+    </span>
+
+  </div>
+
+  <div class="progress-bar">
+
+    <div
+      id="progress-fill"
+      class="progress-fill"
+    ></div>
+
+  </div>
+
+</div>
+
+
+<!-- PLAN -->
 
 <div id="plan"></div>
 
-<section class="section">
-<h2>Pace guide</h2>
-<div class="grid">
-  <div class="item"><b>Easy / recovery</b>5:15–5:45/km</div>
-  <div class="item"><b>Long run</b>Generally 5:15–5:40/km</div>
-  <div class="item"><b>Marathon effort</b>~4:55–5:05/km</div>
-  <div class="item"><b>Tempo</b>~4:15–4:25/km</div>
-</div>
-</section>
+
+<!-- PACE -->
 
 <section class="section">
-<h2>Long-run fuelling</h2>
-<p>From roughly 18 km onwards, practise <b>60–75 g carbohydrate/hour</b> and use the same gels and drinks you expect to use in Florence.</p>
+
+  <h2>Pace guide</h2>
+
+  <div class="grid">
+
+    <div class="item">
+      <b>Easy / recovery</b>
+      5:15–5:45/km
+    </div>
+
+    <div class="item">
+      <b>Long run</b>
+      Generally 5:15–5:40/km
+    </div>
+
+    <div class="item">
+      <b>Marathon effort</b>
+      ~4:55–5:05/km
+    </div>
+
+    <div class="item">
+      <b>Tempo</b>
+      ~4:15–4:25/km
+    </div>
+
+  </div>
+
 </section>
+
+
+<!-- FUELLING -->
 
 <section class="section">
-<h2>Race approach</h2>
-<div class="grid">
-  <div class="item"><b>0–10 km</b>~5:05/km — deliberately controlled.</div>
-  <div class="item"><b>10–25 km</b>~4:58–5:02/km — settle into rhythm.</div>
-  <div class="item"><b>25–32 km</b>Hold if comfortable; don't force it.</div>
-  <div class="item"><b>32 km+</b>If feeling strong, gradually push. Otherwise protect the finish.</div>
-</div>
+
+  <h2>Long-run fuelling</h2>
+
+  <p>
+    From roughly 18 km onwards, practise
+    <b>60–75 g carbohydrate/hour</b>
+    and use the same gels and drinks you expect to use in Florence.
+  </p>
+
 </section>
 
-<footer>Tip: tick each session when completed. Your ticks are saved automatically in this browser.</footer>
+
+<!-- RACE -->
+
+<section class="section">
+
+  <h2>Race approach</h2>
+
+  <div class="grid">
+
+    <div class="item">
+      <b>0–10 km</b>
+      ~5:05/km — deliberately controlled.
+    </div>
+
+    <div class="item">
+      <b>10–25 km</b>
+      ~4:58–5:02/km — settle into rhythm.
+    </div>
+
+    <div class="item">
+      <b>25–32 km</b>
+      Hold if comfortable; don't force it.
+    </div>
+
+    <div class="item">
+      <b>32 km+</b>
+      If feeling strong, gradually push.
+      Otherwise protect the finish.
+    </div>
+
+  </div>
+
+</section>
+
+
+<footer>
+
+  Tip: tick each session when completed.
+  Your progress is synchronised through your Supabase account.
+
+</footer>
+
 </div>
+
+
+<!-- SUPABASE -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
+
+/*
+===========================================================
+SUPABASE CONFIGURATION
+===========================================================
+
+REPLACE THE TWO VALUES BELOW.
+
+Get them from:
+Supabase → Settings → API
+
+Use:
+- Project URL
+- Publishable key
+
+DO NOT USE THE SECRET / SERVICE ROLE KEY.
+===========================================================
+*/
+
+const SUPABASE_URL =
+  "https://vfistwiiqkdaeoboaeic.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_3wdQknW84XfOCdOhRgKDXw_ILkAzXXE";
+
+
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+
+/*
+===========================================================
+TRAINING PLAN
+===========================================================
+*/
+
 const weeks = [
-["Week 1","28 Sep–4 Oct","Recovery from Copenhagen",
- [["Tuesday","7 km easy + 4 × 20 sec strides","easy"],["Thursday","7 km easy","easy"],["Sunday","12 km easy","long"]]],
-["Week 2","5–11 Oct","Back to normal training",
- [["Tuesday","8 km easy","easy"],["Thursday","9 km · 5 × 3 min comfortably hard · 2 min jog recoveries","quality"],["Sunday","16 km easy","long"]]],
-["Week 3","12–18 Oct","Build endurance",
- [["Tuesday","8 km easy","easy"],["Thursday","10 km · 20–25 min tempo @ ~4:20–4:25/km","quality"],["Sunday","18 km easy","long"]]],
-["Week 4","19–25 Oct","First proper marathon week",
- [["Tuesday","9 km easy","easy"],["Thursday","10 km · 3 × 2 km @ ~4:50–5:00/km · 2 min jog recoveries","quality"],["Sunday","22 km · 17–18 km easy + 4–5 km @ 5:00–5:10/km","long"]]],
-["Week 5","26 Oct–1 Nov","Big endurance week",
- [["Tuesday","9 km easy","easy"],["Thursday","10–11 km · 6–7 km marathon effort @ ~4:55–5:05/km","quality"],["Sunday","25 km · 18 km easy + 7 km @ 5:05–5:20/km if good","long"]]],
-["Week 6","2–8 Nov","Cutback / absorb training",
- [["Tuesday","8 km easy","easy"],["Thursday","9 km · 20 min tempo + easy running","quality"],["Sunday","19–20 km easy","long"]]],
-["Week 7","9–15 Nov","Peak week",
- [["Tuesday","9 km easy","easy"],["Thursday","11 km · 2 × 3 km marathon effort · 3 min easy between","quality"],["Sunday","29 km · 20 km easy + controlled progression","long"]]],
-["Week 8","16–22 Nov","Begin taper",
- [["Tuesday","8 km easy","easy"],["Thursday","10 km · 5–6 km marathon effort","quality"],["Sunday","23–24 km easy","long"]]],
-["Week 9","23–29 Nov","Race week 🇮🇹",
- [["Tuesday","7 km easy + 4 × 20 sec strides","easy"],["Thursday","6–7 km · 3 km marathon effort","quality"],["Sunday","FLORENCE MARATHON · 29 Nov · 42.2 km","race"]]]
+
+  [
+    "Week 1",
+    "28 Sep–4 Oct",
+    "Recovery from Copenhagen",
+
+    [
+      [
+        "Tuesday",
+        "7 km easy + 4 × 20 sec strides",
+        "easy"
+      ],
+
+      [
+        "Thursday",
+        "7 km easy",
+        "easy"
+      ],
+
+      [
+        "Sunday",
+        "12 km easy",
+        "long"
+      ]
+    ]
+  ],
+
+
+  [
+    "Week 2",
+    "5–11 Oct",
+    "Back to normal training",
+
+    [
+      [
+        "Tuesday",
+        "8 km easy",
+        "easy"
+      ],
+
+      [
+        "Thursday",
+        "9 km · 5 × 3 min comfortably hard · 2 min jog recoveries",
+        "quality"
+      ],
+
+      [
+        "Sunday",
+        "16 km easy",
+        "long"
+      ]
+    ]
+  ],
+
+
+  [
+    "Week 3",
+    "12–18 Oct",
+    "Build endurance",
+
+    [
+      [
+        "Tuesday",
+        "8 km easy",
+        "easy"
+      ],
+
+      [
+        "Thursday",
+        "10 km · 20–25 min tempo @ ~4:20–4:25/km",
+        "quality"
+      ],
+
+      [
+        "Sunday",
+        "18 km easy",
+        "long"
+      ]
+    ]
+  ],
+
+
+  [
+    "Week 4",
+    "19–25 Oct",
+    "First proper marathon week",
+
+    [
+      [
+        "Tuesday",
+        "9 km easy",
+        "easy"
+      ],
+
+      [
+        "Thursday",
+        "10 km · 3 × 2 km @ ~4:50–5:00/km · 2 min jog recoveries",
+        "quality"
+      ],
+
+      [
+        "Sunday",
+        "22 km · 17–18 km easy + 4–5 km @ 5:00–5:10/km",
+        "long"
+      ]
+    ]
+  ],
+
+
+  [
+    "Week 5",
+    "26 Oct–1 Nov",
+    "Big endurance week",
+
+    [
+      [
+        "Tuesday",
+        "9 km easy",
+        "easy"
+      ],
+
+      [
+        "Thursday",
+        "10–11 km · 6–7 km marathon effort @ ~4:55–5:05/km",
+        "quality"
+      ],
+
+      [
+        "Sunday",
+        "25 km · 18 km easy + 7 km @ 5:05–5:20/km if good",
+        "long"
+      ]
+    ]
+  ],
+
+
+  [
+    "Week 6",
+    "2–8 Nov",
+    "Cutback / absorb training",
+
+    [
+      [
+        "Tuesday",
+        "8 km easy",
+        "easy"
+      ],
+
+      [
+        "Thursday",
+        "9 km · 20 min tempo + easy running",
+        "quality"
+      ],
+
+      [
+        "Sunday",
+        "19–20 km easy",
+        "long"
+      ]
+    ]
+  ],
+
+
+  [
+    "Week 7",
+    "9–15 Nov",
+    "Peak week",
+
+    [
+      [
+        "Tuesday",
+        "9 km easy",
+        "easy"
+      ],
+
+      [
+        "Thursday",
+        "11 km · 2 × 3 km marathon effort · 3 min easy between",
+        "quality"
+      ],
+
+      [
+        "Sunday",
+        "29 km · 20 km easy + controlled progression",
+        "long"
+      ]
+    ]
+  ],
+
+
+  [
+    "Week 8",
+    "16–22 Nov",
+    "Begin taper",
+
+    [
+      [
+        "Tuesday",
+        "8 km easy",
+        "easy"
+      ],
+
+      [
+        "Thursday",
+        "10 km · 5–6 km marathon effort",
+        "quality"
+      ],
+
+      [
+        "Sunday",
+        "23–24 km easy",
+        "long"
+      ]
+    ]
+  ],
+
+
+  [
+    "Week 9",
+    "23–29 Nov",
+    "Race week 🇮🇹",
+
+    [
+      [
+        "Tuesday",
+        "7 km easy + 4 × 20 sec strides",
+        "easy"
+      ],
+
+      [
+        "Thursday",
+        "6–7 km · 3 km marathon effort",
+        "quality"
+      ],
+
+      [
+        "Sunday",
+        "FLORENCE MARATHON · 29 Nov · 42.2 km",
+        "race"
+      ]
+    ]
+  ]
+
 ];
 
-const container=document.getElementById("plan");
-weeks.forEach((w,wi)=>{
-  const el=document.createElement("section"); el.className="week";
-  el.innerHTML=`<div class="weekhead"><strong>${w[0]} · ${w[1]}</strong><span class="focus">${w[2]}</span></div><div class="runs"></div>`;
-  const runs=el.querySelector(".runs");
-  w[3].forEach((r,ri)=>{
-    const key=`florence-${wi}-${ri}`;
-    const checked=localStorage.getItem(key)==="1";
-    const div=document.createElement("div"); div.className=`run ${r[2]}`;
-    div.innerHTML=`<div class="day">${r[0]}</div><div class="session"><label><input class="check" type="checkbox" ${checked?"checked":""}>${r[1]}</label></div>`;
-    const cb=div.querySelector("input");
-    if(checked) div.classList.add("done");
-    cb.addEventListener("change",()=>{
-      localStorage.setItem(key,cb.checked?"1":"0");
-      div.classList.toggle("done",cb.checked);
-    });
-    runs.appendChild(div);
-  });
-  container.appendChild(el);
-});
+
+const TOTAL_RUNS = 27;
+
+
+/*
+===========================================================
+CREATE PLAN
+===========================================================
+*/
+
+const plan =
+  document.getElementById("plan");
+
+
+weeks.forEach(
+  (week, weekIndex) => {
+
+    const section =
+      document.createElement("section");
+
+    section.className = "week";
+
+
+    section.innerHTML = `
+
+      <div class="weekhead">
+
+        <strong>
+          ${week[0]} · ${week[1]}
+        </strong>
+
+        <span class="focus">
+          ${week[2]}
+        </span>
+
+      </div>
+
+      <div class="runs"></div>
+
+    `;
+
+
+    const runs =
+      section.querySelector(".runs");
+
+
+    week[3].forEach(
+      (run, runIndex) => {
+
+        const runId =
+          `week${weekIndex + 1}-${runIndex === 0
+            ? "tuesday"
+            : runIndex === 1
+              ? "thursday"
+              : "sunday"}`;
+
+
+        const div =
+          document.createElement("div");
+
+
+        div.className =
+          `run ${run[2]}`;
+
+
+        div.dataset.run =
+          runId;
+
+
+        div.innerHTML = `
+
+          <div class="day">
+            ${run[0]}
+          </div>
+
+          <div class="session">
+
+            <label>
+
+              <input
+                type="checkbox"
+                class="check run-checkbox"
+                data-run="${runId}"
+              >
+
+              ${run[1]}
+
+            </label>
+
+          </div>
+
+        `;
+
+
+        runs.appendChild(div);
+
+      }
+    );
+
+
+    plan.appendChild(section);
+
+  }
+);
+
+
+/*
+===========================================================
+LOGIN
+===========================================================
+*/
+
+const emailInput =
+  document.getElementById("email");
+
+const loginButton =
+  document.getElementById("login-button");
+
+const logoutButton =
+  document.getElementById("logout-button");
+
+const loginForm =
+  document.getElementById("login-form");
+
+const loginMessage =
+  document.getElementById("login-message");
+
+const syncStatus =
+  document.getElementById("sync-status");
+
+
+loginButton.addEventListener(
+  "click",
+  async () => {
+
+    const email =
+      emailInput.value.trim();
+
+
+    if (!email) {
+
+      loginMessage.textContent =
+        "Please enter your email address.";
+
+      return;
+
+    }
+
+
+    loginButton.disabled = true;
+
+    loginMessage.textContent =
+      "Sending sign-in link...";
+
+
+    const { error } =
+      await supabaseClient.auth.signInWithOtp({
+
+        email: email,
+
+        options: {
+
+          emailRedirectTo:
+            "https://tomquille92-netizen.github.io/Florence-marathon/"
+
+        }
+
+      });
+
+
+    loginButton.disabled = false;
+
+
+    if (error) {
+
+      loginMessage.textContent =
+        error.message;
+
+    } else {
+
+      loginMessage.textContent =
+        "Check your email — we've sent you a sign-in link.";
+
+    }
+
+  }
+);
+
+
+logoutButton.addEventListener(
+  "click",
+  async () => {
+
+    await supabaseClient.auth.signOut();
+
+    location.reload();
+
+  }
+);
+
+
+/*
+===========================================================
+GET CURRENT SESSION
+===========================================================
+*/
+
+async function getSession() {
+
+  const {
+    data: { session }
+  } =
+    await supabaseClient.auth.getSession();
+
+  return session;
+
+}
+
+
+/*
+===========================================================
+UPDATE LOGIN DISPLAY
+===========================================================
+*/
+
+async function updateLoginState() {
+
+  const session =
+    await getSession();
+
+
+  if (session) {
+
+    loginMessage.textContent =
+      `Signed in as ${session.user.email}`;
+
+    loginForm.style.display =
+      "none";
+
+    logoutButton.style.display =
+      "inline-block";
+
+    syncStatus.textContent =
+      "✓ Progress syncing across your devices.";
+
+    await loadProgress();
+
+  } else {
+
+    loginMessage.textContent =
+      "Sign in to synchronise your completed runs across your devices.";
+
+    loginForm.style.display =
+      "block";
+
+    logoutButton.style.display =
+      "none";
+
+    syncStatus.textContent =
+      "Not signed in — progress won't synchronise between devices.";
+
+    loadLocalProgress();
+
+  }
+
+}
+
+
+/*
+===========================================================
+LOAD PROGRESS FROM SUPABASE
+===========================================================
+*/
+
+async function loadProgress() {
+
+  const session =
+    await getSession();
+
+
+  if (!session) {
+
+    loadLocalProgress();
+
+    return;
+
+  }
+
+
+  syncStatus.textContent =
+    "Syncing progress...";
+
+
+  const { data, error } =
+    await supabaseClient
+      .from("run_progress")
+      .select("run_id, completed")
+      .eq("user_id", session.user.id);
+
+
+  if (error) {
+
+    console.error(error);
+
+    syncStatus.textContent =
+      "Could not sync. Showing local progress.";
+
+    loadLocalProgress();
+
+    return;
+
+  }
+
+
+  document
+    .querySelectorAll(".run-checkbox")
+    .forEach(
+      checkbox => {
+
+        checkbox.checked = false;
+
+        checkbox
+          .closest(".run")
+          ?.classList.remove("done");
+
+      }
+    );
+
+
+  data.forEach(
+    row => {
+
+      const checkbox =
+        document.querySelector(
+          `[data-run="${row.run_id}"]`
+        );
+
+
+      if (!checkbox) return;
+
+
+      checkbox.checked =
+        row.completed;
+
+
+      checkbox
+        .closest(".run")
+        ?.classList.toggle(
+          "done",
+          row.completed
+        );
+
+    }
+  );
+
+
+  updateProgress();
+
+  syncStatus.textContent =
+    "✓ Progress synced.";
+
+}
+
+
+/*
+===========================================================
+SAVE A RUN
+===========================================================
+*/
+
+async function saveRun(
+  runId,
+  completed
+) {
+
+  const session =
+    await getSession();
+
+
+  /*
+  If not logged in, use local storage
+  as a temporary fallback.
+  */
+
+  if (!session) {
+
+    localStorage.setItem(
+      runId,
+      completed ? "completed" : "not-completed"
+    );
+
+    return;
+
+  }
+
+
+  syncStatus.textContent =
+    "Saving...";
+
+
+  const { error } =
+    await supabaseClient
+      .from("run_progress")
+      .upsert({
+
+        user_id:
+          session.user.id,
+
+        run_id:
+          runId,
+
+        completed:
+          completed,
+
+        completed_at:
+          completed
+            ? new Date().toISOString()
+            : null
+
+      });
+
+
+  if (error) {
+
+    console.error(error);
+
+    syncStatus.textContent =
+      "Could not save progress.";
+
+    return;
+
+  }
+
+
+  syncStatus.textContent =
+    "✓ Saved and synced.";
+
+}
+
+
+/*
+===========================================================
+CHECKBOX EVENTS
+===========================================================
+*/
+
+document.addEventListener(
+  "change",
+  event => {
+
+    if (
+      !event.target.classList.contains(
+        "run-checkbox"
+      )
+    ) {
+
+      return;
+
+    }
+
+
+    const checkbox =
+      event.target;
+
+
+    const runId =
+      checkbox.dataset.run;
+
+
+    const completed =
+      checkbox.checked;
+
+
+    checkbox
+      .closest(".run")
+      ?.classList.toggle(
+        "done",
+        completed
+      );
+
+
+    /*
+    Save locally too.
+    This means the UI remains useful
+    if temporarily offline.
+    */
+
+    localStorage.setItem(
+      runId,
+      completed
+        ? "completed"
+        : "not-completed"
+    );
+
+
+    saveRun(
+      runId,
+      completed
+    );
+
+
+    updateProgress();
+
+  }
+);
+
+
+/*
+===========================================================
+LOCAL FALLBACK
+===========================================================
+*/
+
+function loadLocalProgress() {
+
+  document
+    .querySelectorAll(".run-checkbox")
+    .forEach(
+      checkbox => {
+
+        const runId =
+          checkbox.dataset.run;
+
+
+        const completed =
+          localStorage.getItem(runId)
+          === "completed";
+
+
+        checkbox.checked =
+          completed;
+
+
+        checkbox
+          .closest(".run")
+          ?.classList.toggle(
+            "done",
+            completed
+          );
+
+      }
+    );
+
+
+  updateProgress();
+
+}
+
+
+/*
+===========================================================
+PROGRESS COUNTER
+===========================================================
+*/
+
+function updateProgress() {
+
+  const completed =
+    document
+      .querySelectorAll(
+        ".run-checkbox:checked"
+      )
+      .length;
+
+
+  const percentage =
+    Math.round(
+      completed /
+      TOTAL_RUNS *
+      100
+    );
+
+
+  document.getElementById(
+    "progress-number"
+  ).textContent =
+    `${completed} / ${TOTAL_RUNS}`;
+
+
+  document.getElementById(
+    "progress-fill"
+  ).style.width =
+    `${percentage}%`;
+
+}
+
+
+/*
+===========================================================
+AUTH STATE
+===========================================================
+*/
+
+supabaseClient.auth.onAuthStateChange(
+  async (event, session) => {
+
+    if (session) {
+
+      loginForm.style.display =
+        "none";
+
+      logoutButton.style.display =
+        "inline-block";
+
+      loginMessage.textContent =
+        `Signed in as ${session.user.email}`;
+
+      await loadProgress();
+
+    }
+
+  }
+);
+
+
+/*
+===========================================================
+INITIALISE
+===========================================================
+*/
+
+updateLoginState();
+
+
+/*
+===========================================================
+REGISTER PWA SERVICE WORKER
+===========================================================
+*/
+
+if ("serviceWorker" in navigator) {
+
+  navigator.serviceWorker.register(
+    "/Florence-marathon/sw.js"
+  );
+
+}
+
 </script>
+
 </body>
 </html>

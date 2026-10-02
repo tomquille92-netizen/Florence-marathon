@@ -1,0 +1,9 @@
+{
+  "name": "Florence Marathon Training Plan",
+  "short_name": "Florence Marathon",
+  "start_url": "/Florence-marathon/",
+  "display": "standalone",
+  "background_color": "#f5f7f8",
+  "theme_color": "#1f6f8b",
+  "description": "Personal Florence Marathon training plan"
+}
